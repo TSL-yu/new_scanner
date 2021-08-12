@@ -178,8 +178,9 @@ class FileStorage {
             }
             for fd in folders {
                 if let all = try? FileManager.default.contentsOfDirectory(at: fd, includingPropertiesForKeys: nil) {
+                    print("this is all +++",all)
                     let usdz = all.filter {
-                        $0.pathExtension == "usdz"
+                        $0.pathExtension == "ply"
                     }
                     if usdz.count == 1 {
                         models.append(usdz[0])
@@ -191,7 +192,7 @@ class FileStorage {
     }
     
     public func deleteModel(_ url: URL) -> Bool {
-        if url.pathExtension != "usdz" {
+        if url.pathExtension != "ply" {
             return false
         }
         let parentURL = url.deletingLastPathComponent()
@@ -203,7 +204,7 @@ class FileStorage {
     
     public func renameModel(_ url: URL, _ newName: String) {
         let oldPath = url.relativePath
-        let newPath = url.deletingLastPathComponent().appendingPathComponent("\(newName).usdz").relativePath
+        let newPath = url.deletingLastPathComponent().appendingPathComponent("\(newName).ply").relativePath
         try! FileManager.default.moveItem(atPath: oldPath, toPath: newPath)
     }
 

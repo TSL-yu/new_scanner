@@ -52,18 +52,8 @@
                 self.folderUrl = folderUrl
 
                 self.renderer.savePointsToFile(folderUrl: folderUrl)
-//                
-//                
-//                let scenviewcontroller = ScenViewController()
-//                scenviewcontroller.filePath = self.renderer.filePath
-//
-//                print("this is file path --------",self.renderer.filePath)
-//
-//                present(scenviewcontroller, animated: true, completion: nil)
-//                // Mark : indicator
-//                //self.performSegue(withIdentifier: "showback", sender: nil)
-//                //sessionStarted = false
-                    
+
+        
                 performSegue(withIdentifier: "showscene", sender: self)
                 
             } else {

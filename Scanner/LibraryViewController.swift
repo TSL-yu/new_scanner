@@ -20,6 +20,11 @@ class LibraryViewController: UIViewController, UICollectionViewDelegate, UIColle
     var thumbnailIndex = 0
     var fileStorage = FileStorage.provide()!
     
+    
+    private var folderUrl : URL? = nil
+    
+    private var filePath : URL? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -47,7 +52,7 @@ class LibraryViewController: UIViewController, UICollectionViewDelegate, UIColle
         cell.delegate = self
         
         let url = arObjects[indexPath.item]
-        let title = url.lastPathComponent
+        let title = "unit"
         cell.modelTitle.text = title.capitalized
         
         let timeStamp = url.deletingLastPathComponent().lastPathComponent
@@ -62,17 +67,20 @@ class LibraryViewController: UIViewController, UICollectionViewDelegate, UIColle
             cell.date.text = "unknown date"
         }
         
-        let request = QLThumbnailGenerator.Request(fileAt: url, size: CGSize(width: 100, height: 100), scale: UIScreen.main.scale, representationTypes: .all)
-        let generator = QLThumbnailGenerator.shared
+        let imagepath = url.path.split(separator: "/").dropLast().joined(separator: "/") + "/scn.png";
         
-        generator.generateRepresentations(for: request) { (thumbnail, type, error) in
+        let image = UIImage( contentsOfFile: imagepath )
+        
+
+        
+     
             DispatchQueue.main.async {
-                if thumbnail == nil || error != nil {
+                if image == nil {
                     return
                 } else {
-                    cell.modelImage.image = thumbnail!.uiImage
+                    cell.modelImage.image = image
                 }
-            }
+            
         }
 
 //        print(cell, IndexPath(), "index--------")
@@ -80,13 +88,9 @@ class LibraryViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        thumbnailIndex = indexPath.item
-
-        let previewController = QLPreviewController()
-        previewController.dataSource = self
-        previewController.delegate = self
-        present(previewController, animated: true)
-        print(" this is the num of item index" , indexPath.item)
+        //thumbnailIndex = indexPath.item
+        self.filePath = self.arObjects[indexPath.row]
+        performSegue(withIdentifier: "itemtoscene", sender: self)
     }
     
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
@@ -139,4 +143,21 @@ class LibraryViewController: UIViewController, UICollectionViewDelegate, UIColle
         collectionView.reloadData()
     }
     
+    
+    
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if ( segue.identifier == "itemtoscene" ) {
+            let vc = segue.destination as! ScenViewController
+            vc.filePath = self.filePath?.absoluteString ?? ""
+            vc.folderUrl = self.folderUrl
+            vc.indicatorGetImage = false
+        }
+    }
+    
 }
+
+
+
+

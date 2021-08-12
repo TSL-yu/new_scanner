@@ -12,6 +12,7 @@ import SceneKit
 
     var n: Int = 0
     var pointCloud: Array<SCNVector3> = []
+    var pointCloudColor: Array<SCNVector3> = []
     var filePath: String = ""
     override init() {
         super.init()
@@ -46,7 +47,7 @@ import SceneKit
                 }
 
                 pointCloud = Array<SCNVector3>(repeating: SCNVector3(x: 0, y: 0, z: 0), count: n)
-
+                pointCloudColor = Array<SCNVector3>(repeating: SCNVector3(x: 0, y: 0, z: 0), count: n)
                 // Read data
                 for i in 0...(self.n-1) {
                     let line = myStrings[i]
@@ -57,6 +58,11 @@ import SceneKit
                     pointCloud[i].x = Float(x)
                     pointCloud[i].y = Float(y)
                     pointCloud[i].z = Float(z)
+                    
+                    pointCloudColor[i].x = Float(line.components(separatedBy: " ")[3])!
+                    pointCloudColor[i].y = Float(line.components(separatedBy: " ")[4])!
+                    pointCloudColor[i].z = Float(line.components(separatedBy: " ")[5])!
+                    
                 }
                 NSLog("Point cloud data loaded: %d points", n)
             } catch {
@@ -79,9 +85,14 @@ import SceneKit
             vertices[i].x = Float(p.x)
             vertices[i].y = Float(p.y)
             vertices[i].z = Float(p.z)
-            vertices[i].r = Float(0.0)
-            vertices[i].g = Float(1.0)
-            vertices[i].b = Float(1.0)
+            vertices[i].r = Float(pointCloudColor[i].x)/255.000
+            vertices[i].g = Float(pointCloudColor[i].y)/255.000
+            vertices[i].b = Float(pointCloudColor[i].z)/255.000
+
+//            vertices[i].r = Float(1)
+//            vertices[i].g = Float(0)
+//            vertices[i].b = Float(0)
+            //print("vertex color ===== ",pointCloudColor)
         }
 
         let node = buildNode(points: vertices)

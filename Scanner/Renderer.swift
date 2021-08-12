@@ -24,7 +24,7 @@ final class Renderer {
     // Maximum number of points we store in the point cloud
     private let maxPoints = 100_000_00
     // Number of sample points on the grid
-    private let numGridPoints = 500
+    private let numGridPoints = 3000
     // Particle's size in pixels
     private let particleSize: Float = 10
     // We only use landscape orientation in this app
@@ -421,7 +421,7 @@ private extension Renderer {
         }
         // 6
     
-        let fileUrl = folderUrl.appendingPathComponent("scan.ply.txt")
+        let fileUrl = folderUrl.appendingPathComponent("scan.ply")
 //        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 //        let documentsDirectory = paths[0]
 //        let file = documentsDirectory.appendingPathComponent("ply_\(UUID().uuidString).ply.txt")

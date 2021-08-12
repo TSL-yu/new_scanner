@@ -14,6 +14,7 @@ class ScenViewController: UIViewController{
     @IBOutlet weak var sceneView: SCNView!
     var filePath = String()
     var folderUrl : URL? = nil
+    var indicatorGetImage : Bool = true
     override func viewDidLoad() {
     
         
@@ -23,29 +24,29 @@ class ScenViewController: UIViewController{
         // create a new scene
         let scene = SCNScene()
 
-        // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        cameraNode.camera?.zNear = 0.0
-        cameraNode.camera?.zFar = 10.0
-        scene.rootNode.addChildNode(cameraNode)
-
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 0.3)
-
-        // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = .omni
-        lightNode.position = SCNVector3(x: 0, y: 3, z: 3)
-        scene.rootNode.addChildNode(lightNode)
-
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = UIColor.darkGray
-        scene.rootNode.addChildNode(ambientLightNode)
+//        // create and add a camera to the scene
+//        let cameraNode = SCNNode()
+//        cameraNode.camera = SCNCamera()
+//        cameraNode.camera?.zNear = 0.0
+//        cameraNode.camera?.zFar = 10.0
+//        scene.rootNode.addChildNode(cameraNode)
+//
+//        // place the camera
+//        cameraNode.position = SCNVector3(x: 0, y: 0, z: 0.3)
+//
+//        // create and add a light to the scene
+//        let lightNode = SCNNode()
+//        lightNode.light = SCNLight()
+//        lightNode.light!.type = .omni
+//        lightNode.position = SCNVector3(x: 0, y: 3, z: 3)
+//        scene.rootNode.addChildNode(lightNode)
+//
+//        // create and add an ambient light to the scene
+//        let ambientLightNode = SCNNode()
+//        ambientLightNode.light = SCNLight()
+//        ambientLightNode.light!.type = .ambient
+//        ambientLightNode.light!.color = UIColor.darkGray
+//        scene.rootNode.addChildNode(ambientLightNode)
 
         // retrieve the node
         let pc = PointCloud()
@@ -77,11 +78,16 @@ class ScenViewController: UIViewController{
         
         
         // save scnview snapshot
+        if indicatorGetImage {
+            
+            let screenshot = sceneView.snapshot().pngData()
+            let filepath = self.folderUrl!.appendingPathComponent("scn.png")
+          
+            if screenshot != nil {   try? screenshot?.write(to: filepath) }
+            
+        }
         
-        let screenshot = sceneView.snapshot().pngData()
-        let filepath = self.folderUrl!.appendingPathComponent("scn.png")
-      
-        if screenshot != nil {   try? screenshot?.write(to: filepath) }
+
            
 //        do {
 //            // 7
@@ -115,4 +121,7 @@ class ScenViewController: UIViewController{
 
     
 }
+
+
+
 
